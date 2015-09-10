@@ -1,0 +1,6 @@
+{
+	"name": "VoteMap",
+	"version": "0.0.1",
+	"description": "VoteMap Plugin for BFCON",
+	"main": "de.devversion.votemap.VoteMap"
+}
