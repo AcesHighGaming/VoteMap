@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.devversion.bfcon.common.command.CommandInterface;
+import de.devversion.bfcon.common.CommandInterface;
+import de.devversion.bfcon.common.primitives.PlayerSubset;
+import de.devversion.bfcon.common.primitives.PlayerSubset.Type;
 import de.devversion.bfcon.event.EventHandler;
 import de.devversion.bfcon.event.Listener;
 import de.devversion.bfcon.event.player.chat.PlayerOnGlobalChatEvent;
@@ -141,7 +143,7 @@ public class VoteMap extends Plugin implements Listener {
 					if (votedRound != null) {
 						ci.getAdmin().sayPlayer("There is already a voting progress running!", speaker);
 						return;
-					} else if (/*TODO PLAYERCOUNT */ true) {
+					} else if (ci.getAdmin().listPlayers(new PlayerSubset(Type.ALL)).size() == 1) {
 						ci.getAdmin().sayPlayer("Map instantly changed because of no other players.", speaker);
 						changeMap(mapinfo, modeinfo, 2);
 						return;
@@ -156,12 +158,40 @@ public class VoteMap extends Plugin implements Listener {
 					ci.getAdmin().sayGlobal("VoteMap started by " + speaker);
 					ci.getAdmin().sayGlobal("####################");
 					
-					
+					new Thread(() -> {
+						try {
+							Thread.sleep(60000L);
+						} catch (final InterruptedException e) {
+							e.printStackTrace();
+						}
+						onVotingEnded();
+					}).start();
 				}
 			}
 		}
 	}
 	
+	private void onVotingEnded() {
+		boolean success = false;
+		final int playercount = ci.getAdmin().listPlayers(new PlayerSubset(Type.ALL)).size();
+		if (playercount > 2 && votedPlayers.size() > playercount * (2 / 3)) success = true;
+		else if (playercount == 2) success = true;
+		
+		ci.getAdmin().sayGlobal("######## VOTE ########");
+		ci.getAdmin().sayGlobal("The voting is over! " + votedPlayers.size() + "/" + playercount);
+		if (success) {
+			ci.getAdmin().sayGlobal("Most players voted for " + votedRound.getGameMap().getDescription());
+			changeMap(votedRound.getGameMap(), votedRound.getGameMode(), votedRound.getRounds());
+		} else {
+			ci.getAdmin().sayGlobal("Not enough players voted with yes");
+			ci.getAdmin().sayGlobal("Current map will stay");
+		}
+		ci.getAdmin().sayGlobal("####################");
+		
+		votedPlayers.clear();
+		votedRound = null;
+	}
+
 	private MapInfo stringToMapInfo(final String mapname) {
 		final Optional<MapInfo> filtered = mapinfos.stream().filter(info -> info.getDescription().toLowerCase().contains(mapname.toLowerCase())).findFirst();
 		return filtered.isPresent() ? filtered.get() : null;
