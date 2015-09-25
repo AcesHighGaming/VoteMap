@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import de.devversion.bfcon.common.CommandInterface;
-import de.devversion.bfcon.common.primitives.PlayerSubset;
-import de.devversion.bfcon.common.primitives.PlayerSubset.Type;
-import de.devversion.bfcon.event.EventHandler;
-import de.devversion.bfcon.event.Listener;
-import de.devversion.bfcon.event.player.chat.PlayerOnGlobalChatEvent;
-import de.devversion.bfcon.event.player.chat.PlayerOnSquadChatEvent;
-import de.devversion.bfcon.event.player.chat.PlayerOnTeamChatEvent;
-import de.devversion.bfcon.plugin.Plugin;
+import de.devversion.bfcon.core.CommandInterface;
+import de.devversion.bfcon.core.event.EventHandler;
+import de.devversion.bfcon.core.event.Listener;
+import de.devversion.bfcon.core.event.player.chat.PlayerOnGlobalChatEvent;
+import de.devversion.bfcon.core.event.player.chat.PlayerOnSquadChatEvent;
+import de.devversion.bfcon.core.event.player.chat.PlayerOnTeamChatEvent;
+import de.devversion.bfcon.core.plugin.Plugin;
+import de.devversion.bfcon.core.primitives.PlayerSubset;
+import de.devversion.bfcon.core.primitives.PlayerSubset.Type;
 import de.devversion.bfcon.protocol.ProtocolEvent;
+
 
 public class VoteMap extends Plugin implements Listener {
 
