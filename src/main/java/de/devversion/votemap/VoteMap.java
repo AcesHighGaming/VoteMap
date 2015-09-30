@@ -107,12 +107,12 @@ public class VoteMap extends Plugin implements Listener {
 		processChatMessage(e.getMessage(), e.getSpeaker());
 	}
 	
-	private void processChatMessage(final String message, final String speaker) {
+	private void processChatMessage(final String message, final String speaker) {	
 		if (message.matches("[#!/](votemap).*")) {
 			final String[] arguments = message.split(" ");
 			if (arguments.length != 3) {
 				if (arguments.length == 2 && arguments[1].toLowerCase().equals("about")) {
-					ci.getAdmin().sayPlayer("(c) BFCON - (c) JCON - (c) " + getDescription().getName() + "(" + getDescription().getVersion() + ")", speaker);
+					ci.getAdmin().sayPlayer("(c) BFCON - (c) JCON - (c) " + getDescription().getName() + " (" + getDescription().getVersion() + ")", speaker);
 					ci.getAdmin().sayPlayer("Developed by DevVersion (Die_Kampfgurke)", speaker);
 					return;
 				}
@@ -136,8 +136,7 @@ public class VoteMap extends Plugin implements Listener {
 					return;
 				}
 				
-				//TODO PRIVILIGES IN BFCON - TEMPORARY FIX
-				if (speaker.equals("Die_Kampfgurke") || speaker.equals("RandyXpp")) {
+				if (this.getPrivilegeManager().getPrivilegeUser(speaker) != null && this.getPrivilegeManager().getPrivilegeUser(speaker).getPower() > 10) {
 					ci.getAdmin().sayPlayer("Map instantly changed because of the privileges.", speaker);
 					changeMap(mapinfo, modeinfo, 2);
 				} else {
