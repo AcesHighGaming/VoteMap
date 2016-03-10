@@ -108,7 +108,7 @@ public class VoteMap extends Plugin implements Listener {
 	}
 	
 	private void processChatMessage(final String message, final String speaker) {	
-		if (message.matches("[#!/](votemap).*")) {
+		if (message.matches("[@#!/](votemap).*") || message.matches("[@#!/](changemap).*")) {
 			final String[] arguments = message.split(" ");
 			if (arguments.length != 3) {
 				if (arguments.length == 2 && arguments[1].toLowerCase().equals("about")) {
@@ -136,7 +136,7 @@ public class VoteMap extends Plugin implements Listener {
 					return;
 				}
 				
-				if (this.getPrivilegeManager().getPrivilegeUser(speaker) != null && this.getPrivilegeManager().getPrivilegeUser(speaker).getPower() > 10) {
+				if (this.getPrivilegeManager().getPrivilegeUser(speaker) != null && this.getPrivilegeManager().getPrivilegeUser(speaker).getPower() > 70) {
 					ci.getAdmin().sayPlayer("Map instantly changed because of the privileges.", speaker);
 					changeMap(mapinfo, modeinfo, 2);
 				} else {
